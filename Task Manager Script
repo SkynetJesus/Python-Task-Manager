@@ -1,0 +1,81 @@
+import json
+
+class TaskManager:
+    def __init__(self):
+        self.tasks = {}
+
+    def add_task(self, task_name, task_description):
+        """Add a task to the task manager."""
+        self.tasks[task_name] = task_description
+
+    def view_tasks(self):
+        """View all tasks in the task manager."""
+        for task_name, task_description in self.tasks.items():
+            print(f"Task: {task_name}\nDescription: {task_description}\n")
+
+    def save_to_file(self, filename):
+        """Save tasks to a file."""
+        with open(filename, "w") as file:
+            json.dump(self.tasks, file)
+
+    def load_from_file(self, filename):
+        """Load tasks from a file."""
+        try:
+            with open(filename, "r") as file:
+                self.tasks = json.load(file)
+                print(f"Tasks loaded from {filename}.")
+        except FileNotFoundError:
+            print(f"Error: File '{filename}' not found.")
+
+def authenticate():
+    """Authenticate the user based on username and password."""
+    print("Hint: The username is 'python' and the password is 'cool'.")
+    username = input("Enter username: ")
+    password = input("Enter password: ")
+    return username == "python" and password == "cool"
+
+def display_secret_message():
+    """Display a secret message."""
+    print("Secret Message: Python is cool. I enjoyed learning it.")
+
+def main():
+    if not authenticate():
+        print("Authentication failed. Exiting.")
+        return
+
+    task_manager = TaskManager()
+
+    while True:
+        print("\nTask Manager Menu:")
+        print("1. Add Task")
+        print("2. View Tasks")
+        print("3. Save to File")
+        print("4. Load from File")
+        print("5. Secret Message")
+        print("6. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            task_name = input("Enter task name: ")
+            task_description = input("Enter task description: ")
+            task_manager.add_task(task_name, task_description)
+        elif choice == "2":
+            task_manager.view_tasks()
+        elif choice == "3":
+            filename = input("Enter filename to save: ")
+            task_manager.save_to_file(filename)
+            print(f"Tasks saved to {filename}.")
+        elif choice == "4":
+            filename = input("Enter filename to load: ")
+            task_manager.load_from_file(filename)
+        elif choice == "5":
+            display_secret_message()
+        elif choice == "6":
+            print("Exiting Task Manager. Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please enter a number between 1 and 6.")
+
+if __name__ == "__main__":
+    main()
