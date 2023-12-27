@@ -1,0 +1,92 @@
+import pickle
+import os
+
+def main():
+    filename = "NameEmail.txt"
+    
+    if not os.path.isfile(filename):
+        with open(filename, "wb") as file:
+            emails = {}
+            print("There is no file 'NameEmail.txt'. Let's create the file and enter one registry.")
+            name = input("Enter a name: ").lower()
+            emails[name] = input("Enter e-mail address: ")
+            pickle.dump(emails, file)
+            print("File created.")
+    else:
+        with open(filename, "rb") as infile:
+            emails = read_file(infile)
+            
+        while True:
+            print("\nMENU")
+            print("1: Add a new name and email address")
+            print("2: Change an existing email address")
+            print("3: Delete an existing email address")
+            print("4: Show data for a name")
+            print("------------------------------------")
+            user_choice = input("Please enter a choice among the menu (1, 2, 3, 4) or 'q' to quit: ")
+            
+            if user_choice == '1':
+                emails = add_new_name(emails)
+            elif user_choice == '2':
+                emails = change(emails)
+            elif user_choice == '3':
+                emails = delete(emails)
+            elif user_choice == '4':
+                show_data_for(emails)
+            elif user_choice.lower() == 'q':
+                break
+            else:
+                print("You entered an invalid option.")
+                
+        with open("temp.txt", "wb") as newfile:
+            pickle.dump(emails, newfile)
+            os.remove(filename)
+            os.rename("temp.txt", filename)
+            print("The file has been saved.")
+        print("Program Exited.")
+
+def read_file(infile):
+    try:
+        return pickle.load(infile)
+    except EOFError:
+        return {}
+
+def add_new_name(emails):
+    name = input("Please enter the name: ").lower()
+    if name not in emails:
+        emails[name] = input("E-mail: ")
+        print("The registry for", name, "has been recorded.")
+    else:
+        print("That name already exists.")
+    return emails
+
+def change(emails):
+    name = input("What is the name you want to change email address for: ").lower()
+    if name in emails:
+        emails[name] = input("Enter new e-mail: ")
+        print("The registry for", name, "has been updated.")
+    else:
+        print("It is not found in the file.")
+    return emails
+
+def delete(emails):
+    name = input("What is the name you want to remove email address for: ").lower()
+    if name in emails:
+        del emails[name]
+        print("The registry for", name, "has been deleted.")
+    else:
+        print("It is not found in the file.")
+    return emails
+
+def show_data_for(emails):
+    name = input("What is the name you are looking for?: ").lower()
+    if name in emails:
+        print("Email address:", emails[name])
+    else:
+        print("The name is not found.")
+
+if __name__ == "__main__":
+    main()
+
+
+
