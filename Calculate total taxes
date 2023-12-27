@@ -1,0 +1,41 @@
+def display_total_sales(sub_total):
+    print("the amount of sales : ", sub_total)
+
+def get_sales_tax(sub_total, sales_tax_percent):
+    sales_tax = 0.01*sales_tax_percent*sub_total
+    return sales_tax
+
+def display_state_sales_tax(sales_tax):
+    print("the amount of state sales tax : %.2f"%sales_tax)
+
+def display_county_sales_tax(sales_tax):
+    print("the amount of county sales tax : %.2f"%sales_tax)
+
+def gert_total_tax(state_sales_tax, county_sales_tax):
+    return state_sales_tax + county_sales_tax
+
+def display_total_tax(total_tax):
+    print("total tax is : %.2f"%total_tax)
+
+def main():
+    x = float(input("enter the amount of purchase in USD : "))
+    state_sales_tax = float(input(
+        "enter the state sales tax in percent :"))
+    county_sales_tax = float(input(
+        "enter the county sales tax in percent: "))
+    state_sales_tax = get_sales_tax(x, state_sales_tax)
+
+    county_sales_tax = get_sales_tax(x, county_sales_tax)
+
+    total_sales_tax = gert_total_tax(state_sales_tax, county_sales_tax)
+
+    display_total_sales(x)
+
+    display_state_sales_tax(state_sales_tax)
+
+    display_county_sales_tax(county_sales_tax)
+
+    display_total_tax(total_sales_tax)
+
+if __name__ == "__main__":
+    main()
